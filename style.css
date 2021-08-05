@@ -12,3 +12,9 @@ body{
 
     overflow: hidden;
 }
+
+#coin{
+    transform: rotate(10deg);
+    width:24.5mm;
+    position: absolute;
+}
