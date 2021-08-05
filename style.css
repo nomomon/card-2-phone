@@ -1,39 +1,14 @@
-:root{
-    --n-apps:5;
-    --app-width:calc(100vw/(var(--n-apps) * 0.5 + 0.5 + var(--n-apps)));
-    --app-margin:calc(var(--app-width) * 0.15);
-}
-
 body{
-    margin:0;
-    padding:0;
-    width:100vw;
-    height:100vh;
+    padding: 0;
+    margin: 0;
+
+    background-image:url(bg.png);
+    background-position: 0 0;
+    background-size: 100vw;
+    background-repeat: no-repeat;
+
+    width: 100vw;
+    height: 100vh;
+
     overflow: hidden;
-    background-color: black;
-}
-
-.app{
-    margin:var(--app-margin);
-    width:calc(var(--app-width) * 1.25);
-    box-sizing: border-box;
-    display: inline-block;
-}
-
-.appIcon{
-    margin: auto;
-    margin-bottom: calc(var(--app-width) / 12);
-    width:var(--app-width);
-    height: var(--app-width);
-    background-color: red;
-    border-radius: calc(0.45 * var(--app-width));
-}
-
-.appName{
-    margin:auto;
-    width:calc(var(--app-width) * 1.25);
-    font-family: Arial;
-    color:white;
-    text-shadow: #9b9b9b 0px 0px 1px;
-    text-align: center;
 }

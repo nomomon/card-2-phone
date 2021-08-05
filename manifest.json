@@ -1,0 +1,14 @@
+{
+    "name":"card2phone",
+    "short_name":"c2p",
+    "icons": [{
+    "src": "icon.png",
+      "sizes": "160x160",
+      "type": "image/png"
+    }],
+    "start_url": "../",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#0b1a21",
+    "orientation": "portrait"
+}
