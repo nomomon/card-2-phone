@@ -6,7 +6,7 @@
       "sizes": "160x160",
       "type": "image/png"
     }],
-    "start_url": "./card-2-phone",
+    "start_url": "/card-2-phone",
     "display": "standalone",
     "background_color": "#0b1a21",
     "theme_color": "#0b1a21",
