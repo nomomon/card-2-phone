@@ -28,7 +28,8 @@ const params = {
     },
     time: 0,
     prevTime: 0,
-    currTime: 0
+    currTime: 0,
+    touch: false
 }
 
 const coefOfRestitution = 0.2 // between steel ball and glass
@@ -93,10 +94,34 @@ ondevicemotion = (e) => {
         params.position.y = screenHeightInMeters - coinHeightInMeters * 3/2
     }
 
-    coin.style.top = Math.floor(params.position.y * pixelsInMeter) + "px"
-    coin.style.right = Math.floor(params.position.x * pixelsInMeter) + "px"
+    if(!params.touch){
+        coin.style.left = "unset";
+        
+        coin.style.top = Math.floor(params.position.y * pixelsInMeter) + "px"
+        coin.style.right = Math.floor(params.position.x * pixelsInMeter) + "px"
+    }
 
     params.prevTime = e.timeStamp
 }
 
 // alert(window.location.protocol)
+var timeout = 0
+
+document.body.addEventListener('touchmove', (e) => {
+    if(timeout) clearTimeout(timeout)
+    params.touch = true
+    
+    params.position.y = e.touches[0].pageY / pixelsInMeter
+    params.position.x = e.touches[0].pageX / pixelsInMeter
+
+    
+    coin.style.right = "unset";
+
+    coin.style.top = Math.floor(e.touches[0].pageY) + "px"
+    coin.style.left = Math.floor(e.touches[0].pageX) + "px"
+
+    timeout = setTimeout(() => {
+        params.touch = false
+    }, 100)
+
+}, false);
