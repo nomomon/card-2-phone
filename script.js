@@ -11,7 +11,7 @@ const coin = document.querySelector("#coin")
 const pixelsInMillimeter = relativeEl.clientWidth / 20
 const pixelsInMeter = pixelsInMillimeter * 1000
 
-document.documentElement.style.setProperty('--coin-width', pixelsInMillimeter * 24.5);
+document.documentElement.style.setProperty('--coin-width', pixelsInMillimeter * 24.5 + "px");
 
 const screenWidthInMeters = window.screen.availWidth / pixelsInMeter
 const screenHeightInMeters = window.screen.availHeight / pixelsInMeter
