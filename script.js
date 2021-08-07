@@ -41,6 +41,9 @@ const params = {
 const coefOfRestitution = 0.2 // between steel ball and glass
 const coefOfFriction = 0.6 // between glass and coin
 
+
+var currAngle = 0
+
 ondevicemotion = (e) => {
     params.currTime = e.timeStamp
 
@@ -51,30 +54,25 @@ ondevicemotion = (e) => {
     params.acceleration.y = e.accelerationIncludingGravity.y * (1 - coefOfFriction)
 
     // update position
-    params.position.x += params.velocity.x * params.time + 1/2 * params.acceleration.x * params.time2
-    params.position.y += params.velocity.y * params.time + 1/2 * params.acceleration.y * params.time2
+    dx = params.velocity.x * params.time + 1/2 * params.acceleration.x * params.time2
+    dy = params.velocity.y * params.time + 1/2 * params.acceleration.y * params.time2
 
-    if(params.position.x < 0 || params.position.x > screenWidthInMeters - coinWidthInMeters){
-        currAngle = coin.style.transform || "rotate(0deg)"
-        currAngle = currAngle.split("rotate(")[1].split("deg)")[0]
-        
-        change =  params.velocity.y * params.time / (coinHeightInMeters / 2)
-        change = change * 180 / Math.PI
-        
-        newAngle = currAngle + change
-        
-        coin.style.transform = `rotate(${newAngle}deg)`
-    }
-    if(params.position.y < coinHeightInMeters / 2 || params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2){
-        currAngle = coin.style.transform || "rotate(0deg)"
-        currAngle = currAngle.split("rotate(")[1].split("deg)")[0]
-        
-        change =  params.velocity.y * params.time / (coinHeightInMeters / 2)
-        change = change * 180 / Math.PI
+    params.position.x += dx
+    params.position.y += dy
 
-        newAngle = currAngle + change
+    xwall = params.position.x < 0 ||params.position.x > screenWidthInMeters - coinWidthInMeters 
+    ywall = params.position.y < coinHeightInMeters / 2 || params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2
 
-        coin.style.transform = `rotate(${newAngle}deg)`
+    if(!(xwall && ywall)){
+        
+        circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
+        
+        currAngle += Math.sign((dx*dx > dy*dy)? -dx:dy) 
+                   * Math.sqrt(dx * dx + dy * dy) / circumforance
+
+        // currAngle = currAngle - Math.floor(currAngle / circumforance) * circumforance
+
+        coin.style.transform = `rotate(${currAngle}rad)`
     }
 
     // update velocity
