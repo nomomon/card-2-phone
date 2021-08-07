@@ -1,7 +1,7 @@
 document.documentElement.style.setProperty('--pixel-ratio', devicePixelRatio);
 
 let relativeEl = document.createElement("div")
-relativeEl.style.width = "calc(1cm * 4/3 * var(--pixel-ratio))"
+relativeEl.style.width = "calc(2cm * 0.5 * var(--pixel-ratio))"
 document.body.appendChild(relativeEl)
 
 
@@ -47,8 +47,8 @@ ondevicemotion = (e) => {
     params.time = (params.currTime - params.prevTime) / 1000
     params.time2 = params.time * params.time
 
-    params.acceleration.x = e.accelerationIncludingGravity.x * coefOfFriction
-    params.acceleration.y = e.accelerationIncludingGravity.y * coefOfFriction
+    params.acceleration.x = e.accelerationIncludingGravity.x * (1 - coefOfFriction)
+    params.acceleration.y = e.accelerationIncludingGravity.y * (1 - coefOfFriction)
 
     // update position
     params.position.x += params.velocity.x * params.time + 1/2 * params.acceleration.x * params.time2
