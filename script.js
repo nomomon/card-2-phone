@@ -1,11 +1,17 @@
+document.documentElement.style.setProperty('--pixel-ratio', devicePixelRatio);
+
 let relativeEl = document.createElement("div")
-relativeEl.style.width = "2cm"
+relativeEl.style.width = "calc(1cm * 4/3 * var(--pixel-ratio))"
 document.body.appendChild(relativeEl)
+
+
 
 const coin = document.querySelector("#coin")
 
 const pixelsInMillimeter = relativeEl.clientWidth / 20
 const pixelsInMeter = pixelsInMillimeter * 1000
+
+document.documentElement.style.setProperty('--coin-width', pixelsInMillimeter * 24.5);
 
 const screenWidthInMeters = window.screen.availWidth / pixelsInMeter
 const screenHeightInMeters = window.screen.availHeight / pixelsInMeter
