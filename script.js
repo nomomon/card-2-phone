@@ -1,14 +1,8 @@
 document.documentElement.style.setProperty('--pixel-ratio', devicePixelRatio);
 
-let relativeEl = document.createElement("div")
-relativeEl.style.width = "calc(2cm * 0.5 * var(--pixel-ratio))"
-document.body.appendChild(relativeEl)
-
-
-
 const coin = document.querySelector("#coin")
 
-const pixelsInMillimeter = relativeEl.clientWidth / 20
+const pixelsInMillimeter = window.innerWidth / 76.80
 const pixelsInMeter = pixelsInMillimeter * 1000
 
 document.documentElement.style.setProperty('--coin-width', pixelsInMillimeter * 24.5 + "px");
@@ -67,7 +61,7 @@ ondevicemotion = (e) => {
         
         circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
         
-        currAngle += Math.sign((dx*dx > dy*dy)? -dx:dy) 
+        currAngle += Math.sign((dx*dx > dy*dy)? -params.velocity.x:params.velocity.y) 
                    * Math.sqrt(dx * dx + dy * dy) / circumforance
 
         // currAngle = currAngle - Math.floor(currAngle / circumforance) * circumforance
@@ -118,6 +112,9 @@ document.body.addEventListener('touchmove', (e) => {
     params.position.y = e.touches[0].pageY / pixelsInMeter
     params.position.x = e.touches[0].pageX / pixelsInMeter
 
+    params.velocity.y = 0
+    params.velocity.x = 0
+
     
     coin.style.right = "unset";
 
@@ -126,6 +123,6 @@ document.body.addEventListener('touchmove', (e) => {
 
     timeout = setTimeout(() => {
         params.touch = false
-    }, 100)
+    }, 300)
 
 }, false);
