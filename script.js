@@ -105,24 +105,24 @@ ondevicemotion = (e) => {
 // alert(window.location.protocol)
 var timeout = 0
 
-document.body.addEventListener('touchmove', (e) => {
-    if(timeout) clearTimeout(timeout)
-    params.touch = true
+// document.body.addEventListener('touchmove', (e) => {
+//     if(timeout) clearTimeout(timeout)
+//     params.touch = true
     
-    params.position.y = e.touches[0].pageY / pixelsInMeter
-    params.position.x = e.touches[0].pageX / pixelsInMeter
+//     params.position.y = e.touches[0].pageY / pixelsInMeter
+//     params.position.x = e.touches[0].pageX / pixelsInMeter
 
-    params.velocity.y = 0
-    params.velocity.x = 0
+//     params.velocity.y = 0
+//     params.velocity.x = 0
 
     
-    coin.style.right = "unset";
+//     coin.style.right = "unset";
 
-    coin.style.top = Math.floor(e.touches[0].pageY) + "px"
-    coin.style.left = Math.floor(e.touches[0].pageX) + "px"
+//     coin.style.top = Math.floor(e.touches[0].pageY) + "px"
+//     coin.style.left = Math.floor(e.touches[0].pageX) + "px"
 
-    timeout = setTimeout(() => {
-        params.touch = false
-    }, 300)
+//     timeout = setTimeout(() => {
+//         params.touch = false
+//     }, 300)
 
-}, false);
+// }, false);
