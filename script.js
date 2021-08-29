@@ -46,7 +46,9 @@ ondevicemotion = (e) => {
 
     params.acceleration.x = e.accelerationIncludingGravity.x * (1 - coefOfFriction)
     params.acceleration.y = e.accelerationIncludingGravity.y * (1 - coefOfFriction)
+}
 
+const updateState = () => {
     // update position
     dx = params.velocity.x * params.time + 1/2 * params.acceleration.x * params.time2
     dy = params.velocity.y * params.time + 1/2 * params.acceleration.y * params.time2
@@ -54,26 +56,12 @@ ondevicemotion = (e) => {
     params.position.x += dx
     params.position.y += dy
 
-    xwall = params.position.x < 0 ||params.position.x > screenWidthInMeters - coinWidthInMeters 
-    ywall = params.position.y < coinHeightInMeters / 2 || params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2
-
-    if(!(xwall && ywall)){
-        
-        circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
-        
-        currAngle += Math.sign((dx*dx > dy*dy)? -params.velocity.x:params.velocity.y) 
-                   * Math.sqrt(dx * dx + dy * dy) / circumforance
-
-        // currAngle = currAngle - Math.floor(currAngle / circumforance) * circumforance
-
-        coin.style.transform = `rotate(${currAngle}rad)`
-    }
-
     // update velocity
     params.velocity.x += params.acceleration.x * params.time
     params.velocity.y += params.acceleration.y * params.time
-    
+}
 
+const collision = () => {
     if(params.position.x < 0){
         params.velocity.x = - params.velocity.x * coefOfRestitution
         params.position.x = 0
@@ -100,6 +88,23 @@ ondevicemotion = (e) => {
     }
 
     params.prevTime = e.timeStamp
+}
+
+const rotation = () => {
+    xwall = params.position.x < 0 || params.position.x > screenWidthInMeters - coinWidthInMeters 
+    ywall = params.position.y < coinHeightInMeters / 2 || params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2
+
+    if(!(xwall && ywall)){
+        
+        circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
+        
+        currAngle += Math.sign((dx*dx > dy*dy)? -params.velocity.x:params.velocity.y) 
+                   * Math.sqrt(dx * dx + dy * dy) / circumforance
+
+        // currAngle = currAngle - Math.floor(currAngle / circumforance) * circumforance
+
+        coin.style.transform = `rotate(${currAngle}rad)`
+    }
 }
 
 // alert(window.location.protocol)
