@@ -89,8 +89,10 @@ const collision = () => {
 }
 
 const rotation = () => {
-    xwall = params.position.x < 0 || params.position.x > screenWidthInMeters - coinWidthInMeters 
-    ywall = params.position.y < coinHeightInMeters / 2 || params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2
+    xwall1 = params.position.x < 0
+	xwall2 = params.position.x > screenWidthInMeters - coinWidthInMeters 
+    ywall1 = params.position.y < coinHeightInMeters / 2
+	ywall2 = params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2
 
     if(!(xwall && ywall)){
         
