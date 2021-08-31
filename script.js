@@ -26,6 +26,7 @@ const params = {
         x: 0,
         y: 0
     },
+	circumforance: Math.PI * 24.5 / 1000 / 2,		 // in meters
 	angle: 0,
     touch: false,
 }
@@ -78,8 +79,6 @@ const rotation = () => {
     ywall1 = params.position.y <= coinHeightInMeters / 2
 	ywall2 = params.position.y >= screenHeightInMeters - coinHeightInMeters * 3/2
 
-	circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
-
 	corner = (xwall1 && ywall1) ||
 		 	 (xwall1 && ywall2) ||
 		 	 (xwall2 && ywall1) ||
@@ -88,11 +87,11 @@ const rotation = () => {
 	if(!corner){
 		if(xwall1 || ywall1){
 			params.angle -= Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
-					* Math.sqrt(dx * dx + dy * dy) / circumforance
+					* Math.sqrt(dx * dx + dy * dy) / params.circumforance
 		}
 		if(xwall2 || ywall2){
 			params.angle += Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
-					* Math.sqrt(dx * dx + dy * dy) / circumforance
+					* Math.sqrt(dx * dx + dy * dy) / params.circumforance
 		}
 	}
 	coin.style.transform = `rotate(${params.angle}rad)`
