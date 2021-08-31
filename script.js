@@ -27,9 +27,6 @@ const params = {
         y: 0
     },
 	angle: 0,
-    time: 0,
-    prevTime: 0,
-    currTime: 0,
     touch: false,
 }
 
@@ -38,16 +35,11 @@ const coefOfFriction = 0.6 // between glass and coin
 
 
 ondevicemotion = (e) => {
-    params.currTime = e.timeStamp
-
-    params.time = (params.currTime - params.prevTime) / 1000
-    params.time2 = params.time * params.time
-
     params.acceleration.x = e.accelerationIncludingGravity.x * (1 - coefOfFriction)
     params.acceleration.y = e.accelerationIncludingGravity.y * (1 - coefOfFriction)
 }
 
-const updateParam = () => {
+const updateParams = () => {
     // update position
     dx = params.velocity.x * params.time + 1/2 * params.acceleration.x * params.time2
     dy = params.velocity.y * params.time + 1/2 * params.acceleration.y * params.time2
@@ -78,36 +70,41 @@ const collision = () => {
         params.velocity.y = - params.velocity.y * coefOfRestitution
         params.position.y = screenHeightInMeters - coinHeightInMeters * 3/2
     }
-
-    if(!params.touch){
-        coin.style.left = "unset";
-        
-        coin.style.top = Math.floor(params.position.y * pixelsInMeter) + "px"
-        coin.style.right = Math.floor(params.position.x * pixelsInMeter) + "px"
-    }
 }
 
 const rotation = () => {
-    xwall1 = params.position.x < 0
-	xwall2 = params.position.x > screenWidthInMeters - coinWidthInMeters 
-    ywall1 = params.position.y < coinHeightInMeters / 2
-	ywall2 = params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2
+    xwall1 = params.position.x <= 0
+	xwall2 = params.position.x >= screenWidthInMeters - coinWidthInMeters 
+    ywall1 = params.position.y <= coinHeightInMeters / 2
+	ywall2 = params.position.y >= screenHeightInMeters - coinHeightInMeters * 3/2
 
 	circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
 
-    if(!(xwall1 && ywall2)){
-        params.angle += Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
-                   * Math.sqrt(dx * dx + dy * dy) / circumforance
-    }
-	else if(!(xwall2 && ywall1)){
-        params.angle -= Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
-                   * Math.sqrt(dx * dx + dy * dy) / circumforance
+	corner = (xwall1 && ywall1) ||
+		 	 (xwall1 && ywall2) ||
+		 	 (xwall2 && ywall1) ||
+			 (xwall2 && ywall2)
+
+	if(!corner){
+		if(xwall1 || ywall1){
+			params.angle -= Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
+					* Math.sqrt(dx * dx + dy * dy) / circumforance
+		}
+		if(xwall2 || ywall2){
+			params.angle += Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
+					* Math.sqrt(dx * dx + dy * dy) / circumforance
+		}
 	}
 	coin.style.transform = `rotate(${params.angle}rad)`
 }
 
-// alert(window.location.protocol)
-var timeout = 0
+const updatePosition = () => {
+	coin.style.left = "unset";
+	
+	coin.style.top = Math.floor(params.position.y * pixelsInMeter) + "px"
+	coin.style.right = Math.floor(params.position.x * pixelsInMeter) + "px"
+}
+
 
 // document.body.addEventListener('touchmove', (e) => {
 //     if(timeout) clearTimeout(timeout)
@@ -132,9 +129,16 @@ var timeout = 0
 // }, false);
 
 const doWork = () => {
-    updateParam()
+    updateParams()
     collision()
+
     rotation()
+	updatePosition()
 }
 
-const interval = setInterval(doWork, 10)
+const time = 5
+
+params.time = time / 1000  					// measured in sec
+params.time2 = params.time * params.time
+
+const interval = setInterval(doWork, time)  // measured in milisec
