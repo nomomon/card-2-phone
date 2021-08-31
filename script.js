@@ -26,17 +26,16 @@ const params = {
         x: 0,
         y: 0
     },
+	angle: 0,
     time: 0,
     prevTime: 0,
     currTime: 0,
-    touch: false
+    touch: false,
 }
 
 const coefOfRestitution = 0.2 // between steel ball and glass
 const coefOfFriction = 0.6 // between glass and coin
 
-
-var currAngle = 0
 
 ondevicemotion = (e) => {
     params.currTime = e.timeStamp
@@ -48,7 +47,7 @@ ondevicemotion = (e) => {
     params.acceleration.y = e.accelerationIncludingGravity.y * (1 - coefOfFriction)
 }
 
-const updateState = () => {
+const updateParam = () => {
     // update position
     dx = params.velocity.x * params.time + 1/2 * params.acceleration.x * params.time2
     dy = params.velocity.y * params.time + 1/2 * params.acceleration.y * params.time2
@@ -94,17 +93,17 @@ const rotation = () => {
     ywall1 = params.position.y < coinHeightInMeters / 2
 	ywall2 = params.position.y > screenHeightInMeters - coinHeightInMeters * 3/2
 
-    if(!(xwall && ywall)){
-        
-        circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
-        
-        currAngle += Math.sign((dx*dx > dy*dy)? -params.velocity.x:params.velocity.y) 
+	circumforance = Math.PI * 24.5 / 1000 / 2 // in meters
+
+    if(!(xwall1 && ywall2)){
+        params.angle += Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
                    * Math.sqrt(dx * dx + dy * dy) / circumforance
-
-        // currAngle = currAngle - Math.floor(currAngle / circumforance) * circumforance
-
-        coin.style.transform = `rotate(${currAngle}rad)`
     }
+	else if(!(xwall2 && ywall1)){
+        params.angle -= Math.sign((dx*dx > dy*dy)? -params.velocity.x : params.velocity.y) 
+                   * Math.sqrt(dx * dx + dy * dy) / circumforance
+	}
+	coin.style.transform = `rotate(${params.angle}rad)`
 }
 
 // alert(window.location.protocol)
@@ -133,7 +132,7 @@ var timeout = 0
 // }, false);
 
 const doWork = () => {
-    updateState()
+    updateParam()
     collision()
     rotation()
 }
