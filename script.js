@@ -86,8 +86,6 @@ const collision = () => {
         coin.style.top = Math.floor(params.position.y * pixelsInMeter) + "px"
         coin.style.right = Math.floor(params.position.x * pixelsInMeter) + "px"
     }
-
-    params.prevTime = e.timeStamp
 }
 
 const rotation = () => {
@@ -131,3 +129,11 @@ var timeout = 0
 //     }, 300)
 
 // }, false);
+
+const doWork = () => {
+    updateState()
+    collision()
+    rotation()
+}
+
+const interval = setInterval(doWork, 10)
